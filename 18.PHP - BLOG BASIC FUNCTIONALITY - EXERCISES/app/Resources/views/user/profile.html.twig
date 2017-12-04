@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+
+{% block body_id 'profile' %}
+
+{% block main %}
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+            <form class="form" method="post" >
+                <fieldset>
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h2 class="card-title">{{user.fullName}}</h2>
+                            <h3 class="card-subtitle mb-2 text-muted">{{user.email}}</h3>
+                            <br/>
+
+                            <button type="button" class="btn btn-danger btn-xs" data-toggle="modal"
+                                    data-target="#myModal2">Delete Profile</button>
+
+                            <div class="modal fade" id="myModal2" role="dialog">
+                                <div class="modal-dialog">
+
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h2 class="modal-title text-danger">DELETE PROFILE</h2>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h3>Are you sure you want to delete YOUR PROFILE?</h3>
+                                            <h3 class="text-danger">Warning:</h3>
+                                            <h4 class="text-warning">Clicking
+                                                delete will
+                                                <span class="text-danger">premanently
+                                            delete your profile!</span></h4>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger"
+                                                    data-dismiss="modal" onclick="window
+                                                    .location.href='/profile/delete/{{user.id}}';
+                                                    ">Delete</button>
+                                            <button type="reset" class="btn"
+                                                    data-dismiss="modal">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+            <br/>
+            <div class="panel panel-primary">
+                <div class="panel-heading text-center">
+                    <h2><strong>Last Articles:</strong></h2>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        {% for article in articles %}
+                        <div class="col-md-6">
+                            <article>
+                                <header>
+                                    <h2>{{ article.title}}</h2>
+                                </header>
+
+                                <p>
+                                    {{ article.summary|wordwrap(50) }}
+                                </p>
+
+                                <small class="author">
+                                    {{ article.author }}
+                                </small>
+
+                                <footer>
+                                    <div class="pull-right">
+                                        <button type="button" class="btn btn-danger btn-xs"
+                                                onclick="popUp('{{article.id}}')">Delete</button>
+
+                                        <div class="modal fade" id="{{article.id}}" role="dialog">
+                                            <div class="modal-dialog">
+
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <h3 class="modal-title text-danger">DELETE</h3>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <h4>Are you sure you want to delete this
+                                                            article?</h4>
+                                                    </div>
+                                                    <div class="modal-footer list-inline">
+                                                        <button type="button" class="btn btn-danger"
+                                                                data-dismiss="modal" id="deleteBtn"
+                                                                onclick="window
+                                                                        .location='/article/delete/{{article.id}}'">Delete</button>
+                                                        <button type="reset" class="btn"
+                                                                data-dismiss="modal">Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <a class="btn btn-info btn-xs" href="{{ path('article_view', {id: article.id})}}">Read more &raquo;</a>
+                                    </div>
+                                </footer>
+                            </article>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <input type="submit" class="btn btn-primary btn-sc center-block"  value="All Articles"
+                           onclick="window.location='{{ path('user_articles') }}'">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
